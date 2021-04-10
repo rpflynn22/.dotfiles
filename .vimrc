@@ -2,6 +2,8 @@ set number
 syntax on
 set tabstop=4
 set shiftwidth=4
+set colorcolumn=80
+highlight ColorColumn ctermbg=0 guibg=lightgrey
 filetype indent on
 set autoindent
 set cursorline
@@ -13,11 +15,37 @@ set hlsearch
 set autowrite
 set ignorecase
 set smartcase
+set splitbelow
+set splitright
 
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
+
+
+" highlight last inserted text
+nnoremap gV `[v`]
+
+nmap J <Nop>
+inoremap jk <esc>
+
+inoremap <C-f> <C-x><C-o>
+
+augroup completion_preview_close
+  autocmd!
+  autocmd CompleteDone * if !&previewwindow && &completeopt =~ 'preview' | silent! pclose | endif
+augroup END
+
+set number relativenumber
+
+augroup numbertoggle
+  autocmd!
+  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
+  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
+augroup END
+
+let mapleader=","
 
 " Go to tab by number
 noremap <leader>1 1gt
@@ -30,20 +58,6 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 
-" highlight last inserted text
-nnoremap gV `[v`]
-
-inoremap jk <esc>
-
-inoremap <C-f> <C-x><C-o>
-
-augroup completion_preview_close
-  autocmd!
-  autocmd CompleteDone * if !&previewwindow && &completeopt =~ 'preview' | silent! pclose | endif
-augroup END
-
-let mapleader=","
-
 call plug#begin('~/.vim/plugged')
   Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'ctrlpvim/ctrlp.vim'
@@ -54,14 +68,12 @@ call plug#end()
 let g:tmux_navigator_save_on_switch = 1
 
 function SetGoOpts()
-  nmap <leader>r  <Plug>(go-run)
+  nmap <leader>r  :GoReferrers<CR>
   nmap <leader>t  <Plug>(go-test)
   nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
   nmap <Leader>c <Plug>(go-coverage-toggle)
-  map <C-n> :cnext<CR>
-  map <C-m> :cprevious<CR>
-  nnoremap <leader>a :cclose<CR>
   nnoremap <leader>j :GoDecls<CR>
+  nmap <leader>d :GoDoc<CR>
   let g:go_fmt_command = "goimports"
   let g:go_highlight_fields = 1
   let g:go_highlight_functions = 1
