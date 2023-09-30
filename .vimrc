@@ -76,18 +76,30 @@ nnoremap qq :w\|bd<CR>
 " Jump to end of word before 80th column
 nnoremap <leader>e 80<bar>B
 
+" Highlights for bad whitespace
+highlight BadWhitespace ctermbg=red guibg=red
+
 " Plugins
 call plug#begin('~/.vim/plugged')
-  Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
   Plug 'ctrlpvim/ctrlp.vim'
-  Plug 'christoomey/vim-tmux-navigator'
   Plug 'ap/vim-buftabline'
   Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
   Plug 'towolf/vim-helm'
+  Plug 'vim-scripts/indentpython.vim'
+  Plug 'Valloric/YouCompleteMe'
+  Plug 'unblevable/quick-scope'
+  Plug 'skywind3000/asyncrun.vim'
 call plug#end()
+
+" YouCompleteMe configuration
+let g:ycm_filetype_whitelist = {'python': 1}
 
 " Write all buffers before navigating from Vim to tmux pane
 let g:tmux_navigator_save_on_switch = 1
+
+" **************************
+" BEGIN GOLANG CONFIGURATION
+" **************************
 
 " Collection of go-only settings
 function SetGoOpts()
@@ -116,6 +128,7 @@ function SetGoOpts()
   nnoremap <leader>j :GoDecls<CR>
 
   let g:go_fmt_command = "stripblankimports"
+  let g:go_fmt_options = {"stripblankimports": "-format-only"}
   let g:go_highlight_fields = 1
   let g:go_highlight_functions = 1
   let g:go_highlight_function_calls = 1
@@ -131,12 +144,34 @@ function SetGoOpts()
 endfunction
 
 autocmd FileType go call SetGoOpts()
-autocmd BufNewFile,BufRead /Users/ryan.flynn/go/src/github.com/1debit/*.go let g:go_fmt_options = {
-    \ 'stripblankimports': '-local github.com/1debit',
-    \ }
-autocmd BufNewFile,BufRead /Users/ryan.flynn/go/src/github.com/rpflynn22/*.go let g:go_fmt_options = {
-    \ 'stripblankimports': '-local github.com/rpflynn22',
-    \ }
+
+autocmd BufNewFile,BufRead /Users/ryan.flynn/go/src/github.com/1debit/*.go let g:go_fmt_options = g:go_fmt_options.stripblankimports . " -local github.com/1debit"
+
+autocmd BufNewFile,BufRead /Users/ryan.flynn/go/src/github.com/rpflynn22/*.go let g:go_fmt_options = g:go_fmt_options.stripblankimports . " -local github.com/rpflynn22"
+
+" ************************
+" END GOLANG CONFIGURATION
+" ************************
+
+" **************************
+" BEGIN PYTHON CONFIGURATION
+" **************************
+
+au BufNewFile,BufRead *.py
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set encoding=utf-8 |
+    \ match BadWhitespace /\s\+$/ |
+    \ nnoremap <C-]> :YcmCompleter GoToDeclaration<CR> |
+    \ nnoremap K :YcmCompleter GetDoc<CR>
+
+" ************************
+" END PYTHON CONFIGURATION
+" ************************
 
 augroup filetype
   au! BufRead,BufNewFile *.proto setfiletype proto
