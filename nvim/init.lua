@@ -36,7 +36,13 @@ require('lazy').setup({
       -- Autocompletion
       { 'hrsh7th/nvim-cmp' },     -- Required
       { 'hrsh7th/cmp-nvim-lsp' }, -- Required
-      { 'L3MON4D3/LuaSnip' },     -- Required
+      {
+        "L3MON4D3/LuaSnip",
+        -- follow latest release.
+        version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+        -- install jsregexp (optional!).
+        build = "make install_jsregexp"
+      }
     }
   },
   {
@@ -50,6 +56,20 @@ require('lazy').setup({
     dependencies = { 'nvim-lua/plenary.nvim', 'BurntSushi/ripgrep' }
   },
   {
+    "danielfalk/smart-open.nvim",
+    branch = "0.2.x",
+    config = function()
+      require("telescope").load_extension("smart_open")
+    end,
+    dependencies = {
+      "kkharji/sqlite.lua",
+      -- Only required if using match_algorithm fzf
+      { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+      -- Optional.  If installed, native fzy will be used when match_algorithm is fzy
+      { "nvim-telescope/telescope-fzy-native.nvim" },
+    },
+  },
+  {
     'windwp/nvim-autopairs',
     event = "InsertEnter",
     opts = {} -- this is equalent to setup({}) function
@@ -60,6 +80,11 @@ require('lazy').setup({
   {
     'unblevable/quick-scope',
   },
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  }
 })
 
 
@@ -67,22 +92,46 @@ require('bufferline-config')
 require('telescope-config')
 require('gopls')
 require('language-config')
+require("oil_config")
 
 local lsp = require('lsp-zero').preset({})
 
 lsp.on_attach(function(client, bufnr)
   local opts = { buffer = bufnr }
   lsp.default_keymaps(opts)
+  vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, opts)
   lsp.async_autoformat(client, bufnr)
 end)
 
 require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
+require('lspconfig').jsonls.setup({})
 
 lsp.setup()
 
+-- Diagnostic configuration: show full errors in floating windows
+vim.diagnostic.config({
+  virtual_text = false,
+  float = {
+    border = "rounded",
+    source = true,
+  },
+})
+
+-- Show diagnostics on cursor hold
+vim.api.nvim_create_autocmd("CursorHold", {
+  callback = function()
+    vim.diagnostic.open_float(nil, { focus = false })
+  end,
+})
+
+-- Diagnostic navigation keymaps
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float)
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
+
 vim.cmd('Copilot disable')
 
-vim.opt.background = 'light'
+--vim.opt.background = 'light'
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.ignorecase = true

@@ -16,11 +16,10 @@ local on_attach = function(client, bufnr)
 end
 
 lspconfig.gopls.setup({
-  on_attach = on_attach,
+  --on_attach = on_attach,
   settings = {
     gopls = {
-      buildFlags = { "-tags=integration" },
-      --buildFlags = { "-tags=snowflakeintegration" },
+      buildFlags = { "-tags=integration,endtoendtest,integration_snowflake" },
       usePlaceholders = true,
       semanticTokens = true
     }

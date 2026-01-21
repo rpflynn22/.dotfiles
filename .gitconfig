@@ -9,3 +9,13 @@
 	hist = log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short
 	rbr = for-each-ref --sort=-committerdate --count=10 --format='%(refname:short)' refs/heads/
 
+[user]
+	email = ryan.flynn@chime.com
+	name = Ryan Flynn
+	signingkey = D99DC90A34B08874
+[init]
+	defaultBranch = main
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+[commit]
+	gpgsign = true
