@@ -1,5 +1,38 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "permission_prompt",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo $TMUX_PANE > ~/.claude-tmux-pane && tmux rename-window -t \"$TMUX_PANE\" '⚠ CLAUDE WAITING'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(git status:*)",
@@ -18,12 +51,28 @@
       "Bash(pwd)",
       "Bash(which:*)",
       "Bash(cd:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(go list:*)",
+      "Bash(go doc:*)",
+      "Bash(gh pr list:*)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr status:*)",
+      "Bash(gh pr diff:*)",
+      "Bash(gh pr checks:*)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh repo view:*)",
+      "Bash(gh api:*)",
+      "Bash(gh pr checkout:*)",
+      "Bash(gh pr comment:*)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "Bash(gh run watch:*)"
     ]
   },
   "model": "us.anthropic.claude-opus-4-5-20251101-v1:0",
   "enabledPlugins": {
-    "skills@chime-claude-toolkit": true,
     "gopls-lsp@claude-plugins-official": true
   }
 }
