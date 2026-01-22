@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane"
+            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane || true"
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane"
+            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane || true"
           }
         ]
       }
@@ -68,7 +68,14 @@
       "Bash(gh pr comment:*)",
       "Bash(gh run list:*)",
       "Bash(gh run view:*)",
-      "Bash(gh run watch:*)"
+      "Bash(gh run watch:*)",
+      "Bash(git add:*)",
+      "Bash(git checkout:*)",
+      "Bash(git commit:*)",
+      "Bash(gh search prs:*)",
+      "Bash(cat:*)",
+      "Bash(cut:*)",
+      "Bash(docker:*)"
     ]
   },
   "model": "us.anthropic.claude-opus-4-5-20251101-v1:0",
