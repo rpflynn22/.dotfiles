@@ -7,7 +7,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo $TMUX_PANE > ~/.claude-tmux-pane && tmux rename-window -t \"$TMUX_PANE\" '⚠ CLAUDE WAITING'"
+            "command": "mkdir -p ~/.claude-tmux-waiting && touch ~/.claude-tmux-waiting/\"$TMUX_PANE\" && tmux rename-window -t \"$TMUX_PANE\" '⚠ CLAUDE WAITING'"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane || true"
+            "command": "test -f ~/.claude-tmux-waiting/\"$TMUX_PANE\" && tmux set-window-option -t \"$TMUX_PANE\" automatic-rename on && rm ~/.claude-tmux-waiting/\"$TMUX_PANE\" || true"
           }
         ]
       }
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f ~/.claude-tmux-pane && tmux set-window-option -t \"$(cat ~/.claude-tmux-pane)\" automatic-rename on && rm ~/.claude-tmux-pane || true"
+            "command": "test -f ~/.claude-tmux-waiting/\"$TMUX_PANE\" && tmux set-window-option -t \"$TMUX_PANE\" automatic-rename on && rm ~/.claude-tmux-waiting/\"$TMUX_PANE\" || true"
           }
         ]
       }
