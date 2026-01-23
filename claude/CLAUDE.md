@@ -12,6 +12,3 @@ These instructions apply across all projects and sessions.
 
 ## Git Preferences
 @~/.claude/git-preferences.md
-
-## Go Preferences
-@~/.claude/go-preferences.md

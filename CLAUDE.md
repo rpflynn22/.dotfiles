@@ -37,6 +37,7 @@ cd ~/.dotfiles && ./setup.sh
 | `.tmux.conf` | `~/.tmux.conf` |
 | `.zshrc` | `~/.zshrc` |
 | `claude/*` | `~/.claude/*` |
+| `claude/agents/` | `~/.claude/agents/` |
 | `nvim/` | `~/.config/nvim` |
 
 ## Local-Only Files (Not Version Controlled)

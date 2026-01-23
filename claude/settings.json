@@ -75,7 +75,11 @@
       "Bash(gh search prs:*)",
       "Bash(cat:*)",
       "Bash(cut:*)",
-      "Bash(docker:*)"
+      "Bash(docker:*)",
+      "Bash(pbcopy:*)",
+      "Bash(pbcopy)",
+      "Bash(pbpaste:*)",
+      "Bash(pbpaste)"
     ]
   },
   "model": "us.anthropic.claude-opus-4-5-20251101-v1:0",
